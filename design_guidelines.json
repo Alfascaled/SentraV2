@@ -1,0 +1,104 @@
+{
+  "theme": "Hybrid (Dark Navy Landing Page / High-Contrast Light Dashboard)",
+  "color_palette": {
+    "primary_navy": "#172B4D",
+    "primary_orange": "#ff6300",
+    "accent_yellow": "#fae903",
+    "soft_sky": "#5BC0EB",
+    "background_dark": "#0B1526",
+    "surface_dark": "#172B4D",
+    "text_light": "#F8FAFC",
+    "text_dark": "#0F172A",
+    "dashboard_bg": "#F8FAFC",
+    "dashboard_surface": "#FFFFFF",
+    "border_subtle": "rgba(255, 255, 255, 0.1)"
+  },
+  "typography": {
+    "heading_font": "Playfair Display",
+    "body_font": "Plus Jakarta Sans",
+    "rules": {
+      "h1": "text-4xl md:text-5xl lg:text-6xl font-serif tracking-tight leading-none text-white",
+      "h2": "text-3xl md:text-4xl font-serif tracking-tight leading-tight",
+      "h3": "text-xl md:text-2xl font-serif tracking-tight",
+      "body": "text-base md:text-lg font-sans leading-relaxed text-slate-300",
+      "overline": "text-xs font-sans uppercase tracking-[0.2em] font-bold",
+      "prohibited": ["Inter for headings", "Roboto for headings", "Centered text by default"]
+    }
+  },
+  "visual_enhancers": {
+    "textures": "Subtle digital noise overlay on the dark navy sections to kill the 'digital flatness'.",
+    "glassmorphism": "Use 'Crystal' variant (backdrop-blur-xl bg-white/5 border border-white/10) for stats bar overlapping the hero.",
+    "buttons": "Pill-shaped (rounded-full). Primary CTA in primary_orange (#ff6300) with hover state shifting to a lighter orange. Include hover micro-interactions (-translate-y-1 + shadow-lg).",
+    "cards": "For the landing page: Bento grid styling using soft_sky tinted background (bg-[#5BC0EB]/10) with sharp 1px borders. For Admin: Flat crisp white, minimal shadow, 1px subtle border.",
+    "icons": "Phosphor Icons (@phosphor-icons/react) with Duotone weight for premium feel."
+  },
+  "motion_and_interactions": {
+    "libraries_required": ["framer-motion", "lenis", "react-fast-marquee"],
+    "hero_animation": "Kinetic masked line-by-line reveal for the H1 headline using framer-motion.",
+    "scroll_reveal": "Staggered fade-up for bento grid cards and 'Tentang Kami' list items using framer-motion 'whileInView'.",
+    "parallax": "Subtle vertical parallax translation on the hero image via Framer Motion useScroll.",
+    "marquee": "Slow, editorial drift (react-fast-marquee). High-contrast typography running seamlessly in the background of the 'Program' section."
+  },
+  "layouts": {
+    "landing_page": {
+      "navbar": "Glassmorphic fixed header (backdrop-blur-xl bg-[#172B4D]/80). Do not use fully transparent. Links visible on desktop.",
+      "hero": "Asymmetrical layout. Text content (H1 + Subtitle + CTA) taking 7 columns left, overlapping parallax hero image on the right. Deep Navy (#172B4D) to Darker Navy (#0B1526) gradient.",
+      "stats_bar": "Overlapping the bottom edge of the hero section. Grid-cols-2 md:grid-cols-4. Glassmorphism panel.",
+      "program_section": "Bento Grid layout (Mode A). Mixed span logic for SD, SMP, SMA/UTBK, Bahasa Asing. Cards should utilize bg-[#5BC0EB]/10.",
+      "tentang_kami": "Split 50/50. Left: Full height image with subtle rounded corners. Right: Numbered manifesto checkpoints.",
+      "pengajar": "Grid-cols-1 md:grid-cols-3 gap-8. Cards with photo, name, subject, and credentials.",
+      "paket_pertemuan": "4 column layout (2x, 4x, 6x, 8x). Highlight the 6x/8x as 'Terpopuler' using accent_yellow (#fae903).",
+      "faq": "Accordion list via Shadcn UI, customized to match brand fonts.",
+      "registration": "Two-column grid layout for the form, leading to a WhatsApp CTA button."
+    },
+    "admin_dashboard": {
+      "layout": "Sidebar-based navigation (Left edge, Collapsible). Topbar for breadcrumbs and user profile.",
+      "sidebar": "Deep Navy (#172B4D) with white text. Active state highlighted with Orange (#ff6300).",
+      "content_area": "Light theme (bg-[#F8FAFC]). Crisp tables, Shadcn Select/Inputs. Progressive disclosure.",
+      "tables": "Dense data tables for Tutors, Packages, Registrations. Right-aligned action menus."
+    }
+  },
+  "component_instructions": {
+    "forms": "Use pure Shadcn Form, Input, Select, Textarea components. Customize focus rings to #ff6300.",
+    "accordion": "Use Shadcn Accordion for FAQ.",
+    "dialog": "Use Shadcn Dialog for edit/create actions in the Admin dashboard.",
+    "toasts": "Use Sonner for toast notifications (success/error messages in admin/forms)."
+  },
+  "image_urls": {
+    "hero_image": {
+      "url": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHxzdHVkZW50cyUyMHN0dWR5aW5nJTIwdG9nZXRoZXIlMjBtb2Rlcm58ZW58MHx8fHwxNzg5MjY4OTgwfDA&ixlib=rb-4.1.0&q=85",
+      "category": "Hero Section",
+      "description": "Group of students studying together, energetic and modern."
+    },
+    "tentang_kami_image": {
+      "url": "https://images.unsplash.com/photo-1664382953647-5c6c76dd63b9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAxODF8MHwxfHNlYXJjaHwyfHx0dXRvciUyMHRlYWNoaW5nJTIwc3R1ZGVudHxlbnwwfHx8fDE3ODkyNjg5ODB8MA&ixlib=rb-4.1.0&q=85",
+      "category": "Tentang Kami",
+      "description": "Tutor showing student something on a laptop."
+    },
+    "tutor_1": {
+      "url": "https://images.unsplash.com/photo-1758600587839-56ba05596c69?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwzfHxpbmRvbmVzaWFuJTIwcHJvZmVzc2lvbmFsJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzg5MjY4OTgwfDA&ixlib=rb-4.1.0&q=85",
+      "category": "Pengajar Grid",
+      "description": "Professional Indonesian female tutor with glasses."
+    },
+    "tutor_2": {
+      "url": "https://images.unsplash.com/photo-1561346745-5db62ae43861?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAxODF8MHwxfHNlYXJjaHwzfHx0dXRvciUyMHRlYWNoaW5nJTIwc3R1ZGVudHxlbnwwfHx8fDE3ODkyNjg5ODB8MA&ixlib=rb-4.1.0&q=85",
+      "category": "Pengajar Grid",
+      "description": "Professional male tutor helping a student."
+    },
+    "tutor_3": {
+      "url": "https://images.unsplash.com/photo-1581065178047-8ee15951ede6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwxfHxpbmRvbmVzaWFuJTIwcHJvZmVzc2lvbmFsJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzg5MjY4OTgwfDA&ixlib=rb-4.1.0&q=85",
+      "category": "Pengajar Grid",
+      "description": "Professional Indonesian female tutor in blazer."
+    }
+  },
+  "GENERAL_UI_UX_DESIGN_GUIDELINES": [
+    "You MUST use modern JS, this is a .js not a .tsx codebase, so ensure your imports and component files don't use TypeScript types.",
+    "Never center text by default. Left-align text for readability, particularly inside grids and bento layouts.",
+    "Use generous padding. E.g. p-8 or p-12 for bento grid cards.",
+    "All interactive elements MUST have 'data-testid' attributes (e.g., data-testid='hero-cta-button').",
+    "No complete transparent backgrounds. Even subtle glassmorphism must have a backdrop-blur + color tint.",
+    "Hover states must be obvious and accessible. Use transitions on specific properties, NOT 'transition-all'.",
+    "Respect contrast ratios. Light text on the Dark Navy background, Dark text on the Sky Blue / Yellow accents.",
+    "Use the layout grid to create intentional asymmetry (Tension = Interest)."
+  ]
+}

@@ -1,0 +1,57 @@
+export const CRUD_CONFIG = {
+  programs: {
+    title: "Program",
+    singular: "Program",
+    columns: [{ key: "title", label: "Judul" }, { key: "level", label: "Jenjang" }, { key: "order", label: "Urutan" }],
+    fields: [
+      { name: "title", label: "Judul Program", type: "text", required: true },
+      { name: "level", label: "Label Jenjang (mis. Jenjang SD)", type: "text" },
+      { name: "description", label: "Deskripsi", type: "textarea" },
+      { name: "subjects", label: "Mata Pelajaran (pisahkan dengan koma)", type: "tags" },
+      { name: "icon", label: "Ikon", type: "select", options: ["book", "school", "graduation", "globe", "calculator", "flask", "pen", "star"] },
+      { name: "order", label: "Urutan Tampil", type: "number" },
+    ],
+    empty: { title: "", level: "", description: "", subjects: [], icon: "book", order: 0 },
+  },
+  tutors: {
+    title: "Pengajar",
+    singular: "Pengajar",
+    columns: [{ key: "name", label: "Nama" }, { key: "subject", label: "Mata Pelajaran" }, { key: "education", label: "Pendidikan" }],
+    fields: [
+      { name: "name", label: "Nama Lengkap", type: "text", required: true },
+      { name: "subject", label: "Mata Pelajaran", type: "text" },
+      { name: "education", label: "Pendidikan / Universitas", type: "text" },
+      { name: "photo", label: "URL Foto", type: "image" },
+      { name: "bio", label: "Bio Singkat", type: "textarea" },
+      { name: "order", label: "Urutan Tampil", type: "number" },
+    ],
+    empty: { name: "", subject: "", education: "", photo: "", bio: "", order: 0 },
+  },
+  packages: {
+    title: "Paket Pertemuan",
+    singular: "Paket",
+    columns: [{ key: "name", label: "Nama" }, { key: "sessions", label: "Pertemuan", render: (v) => `${v}x` }, { key: "price", label: "Harga", render: (v) => `Rp ${Number(v).toLocaleString("id-ID")}` }, { key: "popular", label: "Populer", render: (v) => (v ? "Ya" : "-") }],
+    fields: [
+      { name: "name", label: "Nama Paket", type: "text", required: true },
+      { name: "sessions", label: "Jumlah Pertemuan", type: "number" },
+      { name: "price", label: "Harga (Rp)", type: "number" },
+      { name: "duration", label: "Durasi (mis. 90 menit / sesi)", type: "text" },
+      { name: "description", label: "Deskripsi Singkat", type: "textarea" },
+      { name: "features", label: "Fitur (pisahkan dengan koma)", type: "tags" },
+      { name: "popular", label: "Tandai sebagai Terpopuler", type: "boolean" },
+      { name: "order", label: "Urutan Tampil", type: "number" },
+    ],
+    empty: { name: "", sessions: 2, price: 0, duration: "90 menit / sesi", description: "", features: [], popular: false, order: 0 },
+  },
+  faqs: {
+    title: "FAQ",
+    singular: "FAQ",
+    columns: [{ key: "question", label: "Pertanyaan" }, { key: "order", label: "Urutan" }],
+    fields: [
+      { name: "question", label: "Pertanyaan", type: "text", required: true },
+      { name: "answer", label: "Jawaban", type: "textarea" },
+      { name: "order", label: "Urutan Tampil", type: "number" },
+    ],
+    empty: { question: "", answer: "", order: 0 },
+  },
+};
