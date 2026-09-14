@@ -41,6 +41,11 @@ Website lembaga les privat "Sentra Cendekia" dengan bagian Program, Tentang Kami
   - Seed startup TIDAK lagi menimpa password jika admin sudah mengubahnya (flag users.password_custom=true) → menutup celah password .env default tetap valid
 - Diverifikasi: curl (3 kasus validasi ditolak benar) + e2e screenshot (marquee hilang, tombol Balas + href wa.me benar)
 
+## Implemented (14 Sep 2026 — batch 3)
+- Edit Footer dari dashboard: grup "Kontak & Footer" dipisah menjadi "Kontak" + grup "Footer" khusus (Deskripsi Footer + Teks Hak Cipta)
+- Baris hak cipta footer kini editable via settings.footer_copyright (sebelumnya hardcoded "Seluruh hak cipta dilindungi."); default di seed_data + model
+- Diverifikasi: curl (GET default, PUT persist) + screenshot (kartu Footer tampil dengan field footer_copyright)
+
 ## Backlog
 - P1: Notifikasi WhatsApp OTOMATIS saat pendaftaran baru — MENUNGGU pilihan provider user (Twilio/Meta Cloud API + kredensial). Nomor tujuan sudah bisa dikonfigurasi via /admin/whatsapp.
 - P1: Testimoni orang tua (section + CRUD)

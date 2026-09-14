@@ -30,7 +30,7 @@ export const Footer = ({ settings }) => (
     </div>
     <div className="border-t border-white/10">
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 px-5 py-6 text-xs text-slate-500 md:flex-row md:items-center md:px-8">
-        <p>© {new Date().getFullYear()} {settings.brand_name}. Seluruh hak cipta dilindungi.</p>
+        <p>© {new Date().getFullYear()} {settings.brand_name}. {settings.footer_copyright}</p>
         <a href="/admin/login" className="hover:text-slate-300" data-testid="footer-admin-link">Admin</a>
       </div>
     </div>

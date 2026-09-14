@@ -25,13 +25,16 @@ const GROUPS = [
     { name: "about_description", label: "Deskripsi", type: "textarea" },
     { name: "about_image", label: "URL Gambar", type: "image" },
   ] },
-  { title: "Kontak & Footer", fields: [
+  { title: "Kontak", fields: [
     { name: "whatsapp", label: "Nomor WhatsApp (format 62xxx)", type: "text" },
     { name: "whatsapp_message", label: "Pesan Default WhatsApp", type: "textarea" },
     { name: "email", label: "Email", type: "text" },
     { name: "instagram", label: "Instagram", type: "text" },
     { name: "address", label: "Alamat", type: "text" },
-    { name: "footer_text", label: "Teks Footer", type: "textarea" },
+  ] },
+  { title: "Footer", fields: [
+    { name: "footer_text", label: "Deskripsi Footer", type: "textarea" },
+    { name: "footer_copyright", label: "Teks Hak Cipta (setelah © tahun & nama lembaga)", type: "text" },
   ] },
 ];
 

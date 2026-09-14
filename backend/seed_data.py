@@ -31,6 +31,7 @@ DEFAULT_SETTINGS = {
     "address": "Jl. Pendidikan No. 12, Jakarta Selatan",
     "instagram": "@sentracendekia",
     "footer_text": "Lembaga bimbingan belajar privat dengan tutor profesional yang datang ke rumah Anda.",
+    "footer_copyright": "Seluruh hak cipta dilindungi.",
 }
 
 DEFAULT_PROGRAMS = [

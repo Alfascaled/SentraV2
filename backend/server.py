@@ -203,6 +203,7 @@ class Settings(BaseModel):
     address: str = ""
     instagram: str = ""
     footer_text: str = ""
+    footer_copyright: str = "Seluruh hak cipta dilindungi."
 
 
 class RegistrationCreate(BaseModel):
