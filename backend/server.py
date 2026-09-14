@@ -5,6 +5,7 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 import os
+import re
 import uuid
 import logging
 import bcrypt
@@ -88,6 +89,13 @@ def hash_password(password: str) -> str:
 
 def verify_password(plain: str, hashed: str) -> bool:
     return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
+
+
+def validate_password_strength(pw: str):
+    if len(pw) < 8:
+        raise HTTPException(status_code=400, detail="Password baru minimal 8 karakter")
+    if not re.search(r"[A-Za-z]", pw) or not re.search(r"\d", pw):
+        raise HTTPException(status_code=400, detail="Password baru harus mengandung huruf dan angka")
 
 
 def create_access_token(user_id: str, email: str) -> str:
@@ -224,7 +232,7 @@ class LoginInput(BaseModel):
 
 class ChangePasswordInput(BaseModel):
     current_password: str
-    new_password: str = Field(min_length=6)
+    new_password: str = Field(min_length=8)
 
 
 class AdminWhatsappInput(BaseModel):
@@ -276,9 +284,11 @@ async def change_password(payload: ChangePasswordInput, user: dict = Depends(get
     doc = await db.users.find_one({"id": user["id"]})
     if not doc or not verify_password(payload.current_password, doc["password_hash"]):
         raise HTTPException(status_code=400, detail="Password saat ini salah")
+    validate_password_strength(payload.new_password)
     if verify_password(payload.new_password, doc["password_hash"]):
         raise HTTPException(status_code=400, detail="Password baru harus berbeda dari password lama")
-    await db.users.update_one({"id": user["id"]}, {"$set": {"password_hash": hash_password(payload.new_password)}})
+    await db.users.update_one({"id": user["id"]},
+                              {"$set": {"password_hash": hash_password(payload.new_password), "password_custom": True}})
     return {"ok": True}
 
 
@@ -450,8 +460,9 @@ async def seed():
     existing = await db.users.find_one({"email": admin_email})
     if existing is None:
         await db.users.insert_one({"id": new_id(), "email": admin_email, "password_hash": hash_password(admin_password),
-                                   "name": "Admin Sentra", "role": "admin", "created_at": now_iso()})
-    elif not verify_password(admin_password, existing["password_hash"]):
+                                   "name": "Admin Sentra", "role": "admin", "password_custom": False,
+                                   "created_at": now_iso()})
+    elif not existing.get("password_custom") and not verify_password(admin_password, existing["password_hash"]):
         await db.users.update_one({"email": admin_email}, {"$set": {"password_hash": hash_password(admin_password)}})
 
     if await db.settings.count_documents({"key": "site"}) == 0:

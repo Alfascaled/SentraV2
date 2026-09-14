@@ -3,7 +3,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { Stats } from "@/components/landing/Stats";
-import { Marquee } from "@/components/landing/Marquee";
 import { Programs } from "@/components/landing/Programs";
 import { About } from "@/components/landing/About";
 import { Tutors } from "@/components/landing/Tutors";
@@ -33,8 +32,6 @@ export default function Home() {
       <Navbar settings={settings} />
       <Hero settings={settings} />
       <Stats stats={settings.stats} />
-      <div className="h-16 bg-navy-deep" />
-      <Marquee text={settings.marquee_text} />
       <Programs programs={programs} />
       <About settings={settings} />
       <Tutors tutors={tutors} />

@@ -35,7 +35,8 @@ export default function AccountPage() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (next.length < 6) return toast.error("Password baru minimal 6 karakter");
+    if (next.length < 8) return toast.error("Password baru minimal 8 karakter");
+    if (!/[A-Za-z]/.test(next) || !/\d/.test(next)) return toast.error("Password baru harus mengandung huruf dan angka");
     if (next !== confirm) return toast.error("Konfirmasi password tidak cocok");
     setSaving(true);
     try {
@@ -82,7 +83,7 @@ export default function AccountPage() {
           </div>
           <form onSubmit={submit} className="space-y-4">
             <PwInput id="current-pw" label="Password Saat Ini" value={current} onChange={setCurrent} testId="account-current-password" />
-            <PwInput id="new-pw" label="Password Baru (min. 6 karakter)" value={next} onChange={setNext} testId="account-new-password" />
+            <PwInput id="new-pw" label="Password Baru (min. 8 karakter, huruf & angka)" value={next} onChange={setNext} testId="account-new-password" />
             <PwInput id="confirm-pw" label="Ulangi Password Baru" value={confirm} onChange={setConfirm} testId="account-confirm-password" />
             <Button type="submit" disabled={saving || !current || !next || !confirm} className="w-full rounded-full bg-navy hover:bg-navy/90" data-testid="account-save-button">
               <ShieldCheck size={16} className="mr-2" /> {saving ? "Menyimpan..." : "Perbarui Password"}

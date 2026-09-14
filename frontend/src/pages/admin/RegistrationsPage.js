@@ -43,6 +43,16 @@ export default function RegistrationsPage() {
                 <TableCell className="max-w-[16rem] truncate text-sm text-slate-600" title={r.message}>{r.message || "-"}</TableCell>
                 <TableCell><span className={`rounded-full px-3 py-1 text-xs font-bold ${r.status === "baru" ? "bg-brand-yellow text-navy" : "bg-slate-100 text-slate-600"}`} data-testid={`registration-status-${i}`}>{r.status}</span></TableCell>
                 <TableCell className="whitespace-nowrap text-right">
+                  <a
+                    href={waLink(r.phone, `Halo ${r.name}, terima kasih sudah mendaftar di Sentra Cendekia${r.program ? ` untuk program ${r.program}` : ""}${r.package ? ` (paket ${r.package})` : ""}. Kami ingin membantu proses pendaftaran Anda lebih lanjut.`)}
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Balas via WhatsApp"
+                    className="mr-1 inline-flex items-center gap-1.5 rounded-full bg-[#25D366] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#1da851]"
+                    data-testid={`registration-chat-${i}`}
+                  >
+                    <MessageCircle size={14} /> Balas
+                  </a>
                   {r.status === "baru"
                     ? <Button variant="ghost" size="icon" title="Tandai sudah dihubungi" onClick={() => setStatus(r, "dihubungi")} data-testid={`registration-mark-${i}`}><CheckCircle2 size={16} className="text-green-600" /></Button>
                     : <Button variant="ghost" size="icon" title="Kembalikan ke baru" onClick={() => setStatus(r, "baru")} data-testid={`registration-reset-${i}`}><RotateCcw size={16} /></Button>}

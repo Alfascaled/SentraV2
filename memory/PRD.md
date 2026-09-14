@@ -33,6 +33,14 @@ Website lembaga les privat "Sentra Cendekia" dengan bagian Program, Tentang Kami
 - Nomor WhatsApp Admin: field & simpan di halaman /admin/account (disimpan di settings.admin_whatsapp, disanitasi ke digit) — nav "Akun & WhatsApp"
 - Diverifikasi: curl backend (upload/serve 200, change-password validasi, GET/PUT admin/whatsapp) + e2e screenshot UI
 
+## Implemented (14 Sep 2026 — batch 2)
+- Chat Cepat Pendaftar: tombol "Balas" (WhatsApp hijau) di tiap baris Pendaftaran → wa.me + pesan sapaan otomatis (nama/program/paket)
+- Hilangkan running teks (marquee): komponen Marquee.js dihapus, referensi di Home.js & field marquee_text di SettingsPage dibuang (field model backend tetap, harmless)
+- Perketat keamanan kredensial admin:
+  - Kebijakan password baru: min 8 karakter + wajib huruf & angka (validasi backend + klien)
+  - Seed startup TIDAK lagi menimpa password jika admin sudah mengubahnya (flag users.password_custom=true) → menutup celah password .env default tetap valid
+- Diverifikasi: curl (3 kasus validasi ditolak benar) + e2e screenshot (marquee hilang, tombol Balas + href wa.me benar)
+
 ## Backlog
 - P1: Notifikasi WhatsApp OTOMATIS saat pendaftaran baru — MENUNGGU pilihan provider user (Twilio/Meta Cloud API + kredensial). Nomor tujuan sudah bisa dikonfigurasi via /admin/whatsapp.
 - P1: Testimoni orang tua (section + CRUD)

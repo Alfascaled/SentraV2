@@ -18,7 +18,6 @@ const GROUPS = [
     { name: "hero_subtitle", label: "Sub Judul", type: "textarea" },
     { name: "hero_cta", label: "Teks Tombol", type: "text" },
     { name: "hero_image", label: "URL Gambar Hero", type: "image" },
-    { name: "marquee_text", label: "Teks Berjalan (pisahkan dengan •)", type: "text" },
   ] },
   { title: "Tentang Kami", fields: [
     { name: "about_eyebrow", label: "Label Kecil", type: "text" },
