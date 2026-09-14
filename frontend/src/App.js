@@ -9,10 +9,11 @@ import Dashboard from "@/pages/admin/Dashboard";
 import SettingsPage from "@/pages/admin/SettingsPage";
 import CrudPage from "@/pages/admin/CrudPage";
 import RegistrationsPage from "@/pages/admin/RegistrationsPage";
+import AccountPage from "@/pages/admin/AccountPage";
 
 const Protected = ({ children }) => {
   const { user } = useAuth();
-  if (user === null) return <div className="grid min-h-screen place-items-center bg-[#F8FAFC] text-navy">Memeriksa sesi...</div>;
+  if (user === null) return <div className="grid min-h-screen place-items-center bg-white text-navy">Memeriksa sesi...</div>;
   if (user === false) return <Navigate to="/admin/login" replace />;
   return children;
 };
@@ -30,6 +31,7 @@ function App() {
               <Route path="settings" element={<SettingsPage />} />
               <Route path="content/:collection" element={<CrudPage />} />
               <Route path="registrations" element={<RegistrationsPage />} />
+              <Route path="account" element={<AccountPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

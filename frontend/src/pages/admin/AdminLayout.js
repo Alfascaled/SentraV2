@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Settings, BookOpen, Users, Package, HelpCircle, Inbox, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Settings, BookOpen, Users, Package, HelpCircle, Inbox, LogOut, ExternalLink, KeyRound } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 const NAV = [
@@ -10,6 +10,7 @@ const NAV = [
   { to: "/admin/content/packages", label: "Paket", icon: Package },
   { to: "/admin/content/faqs", label: "FAQ", icon: HelpCircle },
   { to: "/admin/registrations", label: "Pendaftaran", icon: Inbox },
+  { to: "/admin/account", label: "Akun & WhatsApp", icon: KeyRound },
 ];
 
 export default function AdminLayout() {
@@ -18,7 +19,7 @@ export default function AdminLayout() {
   const onLogout = async () => { await logout(); navigate("/admin/login"); };
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC] font-sans text-slate-800" data-testid="admin-layout">
+    <div className="flex min-h-screen bg-white font-sans text-slate-800" data-testid="admin-layout">
       <aside className="hidden w-64 shrink-0 flex-col bg-navy text-white md:flex" data-testid="admin-sidebar">
         <div className="px-6 py-7">
           <p className="font-serif text-2xl leading-none">Sentra <span className="text-gold">Cendekia</span></p>

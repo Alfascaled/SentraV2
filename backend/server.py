@@ -9,9 +9,10 @@ import uuid
 import logging
 import bcrypt
 import jwt
+import requests
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
-from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends, UploadFile, File
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field, ConfigDict
@@ -36,6 +37,48 @@ def now_iso():
 
 def new_id():
     return str(uuid.uuid4())
+
+
+# ---------- Object storage ----------
+STORAGE_BASE = (os.environ.get("INTEGRATION_PROXY_URL") or "").strip() or "https://integrations.emergentagent.com"
+STORAGE_URL = STORAGE_BASE.rstrip("/") + "/objstore/api/v1/storage"
+EMERGENT_KEY = os.environ.get("EMERGENT_LLM_KEY")
+APP_NAME = "sentra-cendekia"
+MIME_TYPES = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png",
+              "gif": "image/gif", "webp": "image/webp", "svg": "image/svg+xml"}
+_storage_key = None
+
+
+def init_storage(force: bool = False):
+    global _storage_key
+    if _storage_key and not force:
+        return _storage_key
+    resp = requests.post(f"{STORAGE_URL}/init", json={"emergent_key": EMERGENT_KEY}, timeout=30)
+    resp.raise_for_status()
+    _storage_key = resp.json()["storage_key"]
+    return _storage_key
+
+
+def put_object(path: str, data: bytes, content_type: str) -> dict:
+    key = init_storage()
+    resp = requests.put(f"{STORAGE_URL}/objects/{path}",
+                        headers={"X-Storage-Key": key, "Content-Type": content_type}, data=data, timeout=120)
+    if resp.status_code == 404:
+        key = init_storage(force=True)
+        resp = requests.put(f"{STORAGE_URL}/objects/{path}",
+                            headers={"X-Storage-Key": key, "Content-Type": content_type}, data=data, timeout=120)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def get_object(path: str):
+    key = init_storage()
+    resp = requests.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": key}, timeout=60)
+    if resp.status_code == 404:
+        key = init_storage(force=True)
+        resp = requests.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": key}, timeout=60)
+    resp.raise_for_status()
+    return resp.content, resp.headers.get("Content-Type", "application/octet-stream")
 
 
 # ---------- Auth helpers ----------
@@ -147,6 +190,7 @@ class Settings(BaseModel):
     stats: List[Stat] = []
     whatsapp: str = ""
     whatsapp_message: str = ""
+    admin_whatsapp: str = ""
     email: str = ""
     address: str = ""
     instagram: str = ""
@@ -176,6 +220,15 @@ class StatusUpdate(BaseModel):
 class LoginInput(BaseModel):
     email: str
     password: str
+
+
+class ChangePasswordInput(BaseModel):
+    current_password: str
+    new_password: str = Field(min_length=6)
+
+
+class AdminWhatsappInput(BaseModel):
+    admin_whatsapp: str = ""
 
 
 # ---------- Auth routes ----------
@@ -216,6 +269,66 @@ async def logout(response: Response):
 @api_router.get("/auth/me")
 async def me(user: dict = Depends(get_current_user)):
     return user
+
+
+@api_router.post("/auth/change-password")
+async def change_password(payload: ChangePasswordInput, user: dict = Depends(get_current_user)):
+    doc = await db.users.find_one({"id": user["id"]})
+    if not doc or not verify_password(payload.current_password, doc["password_hash"]):
+        raise HTTPException(status_code=400, detail="Password saat ini salah")
+    if verify_password(payload.new_password, doc["password_hash"]):
+        raise HTTPException(status_code=400, detail="Password baru harus berbeda dari password lama")
+    await db.users.update_one({"id": user["id"]}, {"$set": {"password_hash": hash_password(payload.new_password)}})
+    return {"ok": True}
+
+
+@api_router.get("/admin/whatsapp", dependencies=[admin_only])
+async def get_admin_whatsapp():
+    doc = await db.settings.find_one({"key": "site"}, {"_id": 0}) or {}
+    return {"admin_whatsapp": doc.get("admin_whatsapp", "")}
+
+
+@api_router.put("/admin/whatsapp", dependencies=[admin_only])
+async def set_admin_whatsapp(payload: AdminWhatsappInput):
+    number = "".join(ch for ch in payload.admin_whatsapp if ch.isdigit())
+    await db.settings.update_one({"key": "site"}, {"$set": {"admin_whatsapp": number}}, upsert=True)
+    return {"admin_whatsapp": number}
+
+
+# ---------- Image upload ----------
+@api_router.post("/upload", dependencies=[admin_only])
+async def upload_image(file: UploadFile = File(...)):
+    ext = (file.filename.rsplit(".", 1)[-1] if "." in (file.filename or "") else "bin").lower()
+    if ext not in MIME_TYPES:
+        raise HTTPException(status_code=400, detail="Format tidak didukung. Gunakan JPG, PNG, WEBP, GIF, atau SVG.")
+    data = await file.read()
+    if len(data) > 5 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="Ukuran gambar maksimal 5MB")
+    path = f"{APP_NAME}/uploads/{uuid.uuid4()}.{ext}"
+    content_type = file.content_type or MIME_TYPES[ext]
+    try:
+        result = put_object(path, data, content_type)
+    except Exception as e:
+        logger.error(f"Upload gagal: {e}")
+        raise HTTPException(status_code=502, detail="Gagal mengunggah gambar. Coba lagi.")
+    stored_path = result["path"]
+    await db.files.insert_one({"id": new_id(), "storage_path": stored_path, "content_type": content_type,
+                               "original_filename": file.filename, "size": result.get("size", len(data)),
+                               "created_at": now_iso()})
+    return {"url": f"/api/files/{stored_path}", "path": stored_path}
+
+
+@api_router.get("/files/{path:path}")
+async def serve_file(path: str):
+    record = await db.files.find_one({"storage_path": path})
+    if not record:
+        raise HTTPException(status_code=404, detail="Gambar tidak ditemukan")
+    try:
+        data, content_type = get_object(path)
+    except Exception:
+        raise HTTPException(status_code=404, detail="Gambar tidak ditemukan")
+    return Response(content=data, media_type=record.get("content_type", content_type),
+                    headers={"Cache-Control": "public, max-age=31536000"})
 
 
 # ---------- Generic CRUD ----------
@@ -347,6 +460,11 @@ async def seed():
                                   ("packages", Package, DEFAULT_PACKAGES), ("faqs", FAQ, DEFAULT_FAQS)]:
         if await db[name].count_documents({}) == 0:
             await db[name].insert_many([model(**d, order=i).model_dump() for i, d in enumerate(defaults)])
+    try:
+        init_storage()
+        logger.info("Object storage initialized")
+    except Exception as e:
+        logger.error(f"Storage init failed: {e}")
     logger.info("Seeding complete")
 
 

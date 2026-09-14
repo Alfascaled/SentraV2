@@ -17,16 +17,23 @@ Website lembaga les privat "Sentra Cendekia" dengan bagian Program, Tentang Kami
 ## API
 - Public: GET /api/content, /api/settings, /api/{programs|tutors|packages|faqs}; POST /api/registrations
 - Admin: POST/PUT/DELETE /api/{programs|tutors|packages|faqs}; PUT /api/settings; GET/PATCH/DELETE /api/registrations; GET /api/admin/summary
-- Auth: POST /api/auth/login, /logout; GET /api/auth/me
+- Auth: POST /api/auth/login, /logout; GET /api/auth/me; POST /api/auth/change-password
+- Admin config: GET/PUT /api/admin/whatsapp (nomor WA admin untuk notifikasi)
+- Upload: POST /api/upload (admin, object storage, max 5MB, jpg/png/webp/gif/svg) → {url}; GET /api/files/{path} (publik, serve gambar)
 
 ## Implemented (13 Sep 2026)
 - Landing: Navbar (glass, putih), Hero (masked line reveal, parallax, 3D tilt), Stats bar, Marquee, Program bento grid, Tentang Kami (numbered manifesto), Pengajar, Paket (Terpopuler badge), FAQ accordion, Form pendaftaran → WhatsApp, Footer
 - Admin: login, dashboard ringkasan, Pengaturan Situs (hero, tentang, stats, poin, kontak), CRUD Program/Pengajar/Paket/FAQ, daftar Pendaftaran (status & hapus), logout
 - Testing: iteration_1 — 13/13 backend, semua alur frontend lulus
 
+## Implemented (14 Sep 2026)
+- Ganti Password admin dari panel (halaman /admin/account, verifikasi password lama, min 6 char, harus beda)
+- Upload Gambar via panel (Emergent object storage) — tombol "Unggah Gambar" di semua field image (logo, hero, tentang, foto pengajar); tetap bisa tempel URL
+- Dashboard admin: latar diubah menjadi putih (sebelumnya #F8FAFC)
+- Nomor WhatsApp Admin: field & simpan di halaman /admin/account (disimpan di settings.admin_whatsapp, disanitasi ke digit) — nav "Akun & WhatsApp"
+- Diverifikasi: curl backend (upload/serve 200, change-password validasi, GET/PUT admin/whatsapp) + e2e screenshot UI
+
 ## Backlog
-- P1: Upload gambar (object storage) untuk logo/foto tutor (saat ini URL)
+- P1: Notifikasi WhatsApp OTOMATIS saat pendaftaran baru — MENUNGGU pilihan provider user (Twilio/Meta Cloud API + kredensial). Nomor tujuan sudah bisa dikonfigurasi via /admin/whatsapp.
 - P1: Testimoni orang tua (section + CRUD)
-- P2: Ganti password admin dari panel
-- P2: Notifikasi email/WA saat pendaftaran baru
 - P2: Halaman detail program / blog
