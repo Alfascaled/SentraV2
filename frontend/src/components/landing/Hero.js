@@ -105,15 +105,7 @@ export const Hero = ({ settings }) => {
                 </div>
               </div>
             </div>
-            <motion.div
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              style={{ translateZ: 60 }}
-              className="absolute -left-8 top-12 hidden rounded-2xl border border-navy/10 bg-navy px-5 py-4 shadow-2xl md:block"
-            >
-              <p className="font-serif text-3xl text-brand-yellow">4.9<span className="text-base text-white">/5</span></p>
-              <p className="text-xs text-slate-300">Rating orang tua</p>
-            </motion.div>
+
           </motion.div>
         </motion.div>
       </div>
