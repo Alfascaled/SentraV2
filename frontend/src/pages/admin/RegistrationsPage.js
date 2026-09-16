@@ -5,10 +5,26 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { api, formatApiError, waLink } from "@/lib/api";
 
+const DEFAULT_TEMPLATE = "Halo {nama}, terima kasih sudah mendaftar di Sentra Cendekia{program_clause}{paket_clause}. Kami ingin membantu proses pendaftaran Anda lebih lanjut.";
+
+function buildWaMessage(template, r) {
+  return (template || DEFAULT_TEMPLATE)
+    .replace(/\{nama\}/g, r.name || "")
+    .replace(/\{program\}/g, r.program || "")
+    .replace(/\{paket\}/g, r.package || "")
+    .replace(/\{jenjang\}/g, r.level || "")
+    .replace(/\{program_clause\}/g, r.program ? ` untuk program ${r.program}` : "")
+    .replace(/\{paket_clause\}/g, r.package ? ` (paket ${r.package})` : "");
+}
+
 export default function RegistrationsPage() {
   const [items, setItems] = useState([]);
+  const [waTemplate, setWaTemplate] = useState(DEFAULT_TEMPLATE);
   const load = () => api.get("/registrations").then((r) => setItems(r.data));
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    api.get("/settings").then((r) => { if (r.data.wa_reply_template) setWaTemplate(r.data.wa_reply_template); });
+  }, []);
 
   const setStatus = async (r, status) => {
     try { await api.patch(`/registrations/${r.id}`, { status }); load(); } catch (e) { toast.error(formatApiError(e)); }
@@ -44,7 +60,7 @@ export default function RegistrationsPage() {
                 <TableCell><span className={`rounded-full px-3 py-1 text-xs font-bold ${r.status === "baru" ? "bg-brand-yellow text-navy" : "bg-slate-100 text-slate-600"}`} data-testid={`registration-status-${i}`}>{r.status}</span></TableCell>
                 <TableCell className="whitespace-nowrap text-right">
                   <a
-                    href={waLink(r.phone, `Halo ${r.name}, terima kasih sudah mendaftar di Sentra Cendekia${r.program ? ` untuk program ${r.program}` : ""}${r.package ? ` (paket ${r.package})` : ""}. Kami ingin membantu proses pendaftaran Anda lebih lanjut.`)}
+                    href={waLink(r.phone, buildWaMessage(waTemplate, r))}
                     target="_blank"
                     rel="noreferrer"
                     title="Balas via WhatsApp"

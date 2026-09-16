@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { Plus, Trash2, Save } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { Plus, Trash2, Save, MessageCircle, Info } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { api, formatApiError } from "@/lib/api";
 import { FieldInput } from "./FieldInput";
 
@@ -37,6 +38,26 @@ const GROUPS = [
     { name: "footer_copyright", label: "Teks Hak Cipta (setelah © tahun & nama lembaga)", type: "text" },
   ] },
 ];
+
+const WA_PLACEHOLDERS = [
+  { tag: "{nama}", desc: "Nama pendaftar" },
+  { tag: "{program}", desc: "Program yang dipilih" },
+  { tag: "{paket}", desc: "Paket yang dipilih" },
+  { tag: "{jenjang}", desc: "Jenjang pendidikan" },
+  { tag: "{program_clause}", desc: 'Otomatis " untuk program X" (kosong jika tidak ada)' },
+  { tag: "{paket_clause}", desc: 'Otomatis " (paket X)" (kosong jika tidak ada)' },
+];
+
+function buildPreview(template) {
+  if (!template) return "";
+  return template
+    .replace(/\{nama\}/g, "Budi Santoso")
+    .replace(/\{program\}/g, "Les Privat SMA & UTBK")
+    .replace(/\{paket\}/g, "Paket Intensif")
+    .replace(/\{jenjang\}/g, "Jenjang SMA")
+    .replace(/\{program_clause\}/g, " untuk program Les Privat SMA & UTBK")
+    .replace(/\{paket_clause\}/g, " (paket Paket Intensif)");
+}
 
 const Card = ({ title, children }) => (
   <section className="rounded-2xl border border-slate-200 bg-white p-6">
@@ -96,6 +117,48 @@ export default function SettingsPage() {
           ))}
           <Button type="button" variant="outline" size="sm" className="w-fit" onClick={() => set("stats", [...s.stats, { value: "", label: "" }])} data-testid="settings-add-stat"><Plus size={14} className="mr-1" /> Tambah Statistik</Button>
         </Card>
+
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 lg:col-span-2" data-testid="settings-wa-template-card">
+          <div className="flex items-center gap-2">
+            <MessageCircle size={20} className="text-[#25D366]" />
+            <h2 className="font-serif text-xl text-navy">Template Pesan WhatsApp Balasan</h2>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">Pesan ini digunakan saat admin menekan tombol "Balas" di halaman Pendaftaran.</p>
+
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-slate-700">Template Pesan</label>
+              <Textarea
+                value={s.wa_reply_template || ""}
+                onChange={(e) => set("wa_reply_template", e.target.value)}
+                rows={5}
+                placeholder="Tulis pesan template..."
+                className="resize-y text-sm"
+                data-testid="settings-wa-template-input"
+              />
+              <div className="mt-3 rounded-xl border border-slate-100 bg-slate-50 p-3">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+                  <Info size={13} /> Placeholder yang tersedia
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {WA_PLACEHOLDERS.map((p) => (
+                    <button key={p.tag} type="button" onClick={() => set("wa_reply_template", (s.wa_reply_template || "") + p.tag)} className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-mono text-slate-700 transition hover:border-brand-orange hover:text-brand-orange" title={p.desc} data-testid={`wa-placeholder-${p.tag.replace(/[{}]/g, "")}`}>
+                      {p.tag} <span className="text-[10px] font-sans text-slate-400">({p.desc})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-slate-700">Preview Pesan</label>
+              <div className="rounded-xl border border-[#25D366]/30 bg-[#dcf8c6] p-4 text-sm leading-relaxed text-slate-800 shadow-sm" data-testid="settings-wa-template-preview">
+                {buildPreview(s.wa_reply_template) || <span className="italic text-slate-400">Tulis template di samping untuk melihat preview...</span>}
+              </div>
+              <p className="mt-2 text-xs text-slate-400">Preview menggunakan data contoh: Budi Santoso, Les Privat SMA & UTBK, Paket Intensif.</p>
+            </div>
+          </div>
+        </section>
 
         <Card title="Poin Keunggulan (Tentang Kami)">
           {s.about_points.map((pt, i) => (

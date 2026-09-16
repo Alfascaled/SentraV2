@@ -32,6 +32,7 @@ DEFAULT_SETTINGS = {
     "instagram": "@sentracendekia",
     "footer_text": "Lembaga bimbingan belajar privat dengan tutor profesional yang datang ke rumah Anda.",
     "footer_copyright": "Seluruh hak cipta dilindungi.",
+    "wa_reply_template": "Halo {nama}, terima kasih sudah mendaftar di Sentra Cendekia{program_clause}{paket_clause}. Kami ingin membantu proses pendaftaran Anda lebih lanjut.",
 }
 
 DEFAULT_PROGRAMS = [

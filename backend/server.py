@@ -204,6 +204,7 @@ class Settings(BaseModel):
     instagram: str = ""
     footer_text: str = ""
     footer_copyright: str = "Seluruh hak cipta dilindungi."
+    wa_reply_template: str = ""
 
 
 class RegistrationCreate(BaseModel):
@@ -468,6 +469,12 @@ async def seed():
 
     if await db.settings.count_documents({"key": "site"}) == 0:
         await db.settings.insert_one({**DEFAULT_SETTINGS, "key": "site"})
+    else:
+        # Ensure new default fields are present in existing settings
+        existing_settings = await db.settings.find_one({"key": "site"})
+        missing = {k: v for k, v in DEFAULT_SETTINGS.items() if k not in existing_settings}
+        if missing:
+            await db.settings.update_one({"key": "site"}, {"$set": missing})
     for name, model, defaults in [("programs", Program, DEFAULT_PROGRAMS), ("tutors", Tutor, DEFAULT_TUTORS),
                                   ("packages", Package, DEFAULT_PACKAGES), ("faqs", FAQ, DEFAULT_FAQS)]:
         if await db[name].count_documents({}) == 0:
