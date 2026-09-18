@@ -156,6 +156,9 @@ class Package(Base):
     name: str
     sessions: int = 2
     price: int = 0
+    price_sd: int = 0
+    price_smp: int = 0
+    price_sma: int = 0
     duration: str = "90 menit / sesi"
     description: str = ""
     features: List[str] = []

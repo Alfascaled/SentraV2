@@ -63,16 +63,24 @@ DEFAULT_TUTORS = [
 ]
 
 DEFAULT_PACKAGES = [
-    {"name": "Paket Perkenalan", "sessions": 2, "price": 200000, "duration": "90 menit / sesi",
+    {"name": "Paket Perkenalan", "sessions": 2, "price": 200000,
+     "price_sd": 180000, "price_smp": 200000, "price_sma": 240000,
+     "duration": "90 menit / sesi",
      "description": "Cocok untuk mencoba metode belajar kami.",
      "features": ["2x pertemuan privat", "Tutor datang ke rumah", "Konsultasi kebutuhan belajar", "Bebas pilih jadwal"]},
-    {"name": "Paket Reguler", "sessions": 4, "price": 750000, "duration": "90 menit / sesi",
+    {"name": "Paket Reguler", "sessions": 4, "price": 750000,
+     "price_sd": 680000, "price_smp": 750000, "price_sma": 880000,
+     "duration": "90 menit / sesi",
      "description": "Rutin seminggu sekali untuk menjaga ritme belajar.",
      "features": ["4x pertemuan privat", "Tutor datang ke rumah", "Modul & latihan soal", "Laporan evaluasi bulanan"]},
-    {"name": "Paket Intensif", "sessions": 6, "price": 1250000, "duration": "90 menit / sesi", "popular": True,
+    {"name": "Paket Intensif", "sessions": 6, "price": 1250000,
+     "price_sd": 1100000, "price_smp": 1250000, "price_sma": 1450000,
+     "duration": "90 menit / sesi", "popular": True,
      "description": "Paling banyak dipilih untuk persiapan ujian.",
      "features": ["6x pertemuan privat", "Tutor datang ke rumah", "Modul & bank soal eksklusif", "Laporan evaluasi mingguan", "Grup konsultasi orang tua"]},
-    {"name": "Paket Prestasi", "sessions": 8, "price": 1800000, "duration": "90 menit / sesi",
+    {"name": "Paket Prestasi", "sessions": 8, "price": 1800000,
+     "price_sd": 1580000, "price_smp": 1800000, "price_sma": 2100000,
+     "duration": "90 menit / sesi",
      "description": "Pendampingan maksimal untuk target nilai tertinggi.",
      "features": ["8x pertemuan privat", "Tutor datang ke rumah", "Try-out & pembahasan", "Laporan evaluasi mingguan", "Ganti tutor gratis", "Prioritas jadwal"]},
 ]

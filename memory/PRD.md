@@ -46,13 +46,14 @@ Website lembaga les privat "Sentra Cendekia" dengan bagian Program, Tentang Kami
 - Baris hak cipta footer kini editable via settings.footer_copyright (sebelumnya hardcoded "Seluruh hak cipta dilindungi."); default di seed_data + model
 - Diverifikasi: curl (GET default, PUT persist) + screenshot (kartu Footer tampil dengan field footer_copyright)
 
-## Implemented (16 Sep 2026)
-- Custom Template Pesan WhatsApp: admin bisa edit template pesan balasan WA dari halaman Pengaturan Situs
-- Support placeholder dinamis: {nama}, {program}, {paket}, {jenjang}, {program_clause}, {paket_clause}
-- Live preview pesan (bubble hijau WhatsApp-style) dengan data contoh
-- Tombol "Balas" di Pendaftaran kini menggunakan template dari settings (bukan hardcoded)
-- Seed startup menambahkan field baru ke settings lama secara otomatis
-- Diverifikasi: curl backend (GET/PUT wa_reply_template) + screenshot UI (card template + preview tampil)
+## Implemented (18 Sep 2026)
+- Custom Template Pesan WhatsApp: admin bisa edit template pesan balasan WA dari Pengaturan Situs (placeholder dinamis: {nama}, {program}, {paket}, {jenjang}, {program_clause}, {paket_clause} + live preview)
+- Hapus badge "Rating orang tua 4.9/5" dari Hero dan "14+ Tahun Pengalaman" dari About
+- Harga Per Jenjang (SD/SMP/SMA): setiap paket kini punya 3 harga berbeda per jenjang
+  - Landing page: tab selector SD · SMP · SMA dengan animasi transisi harga
+  - Admin: field Harga SD, Harga SMP, Harga SMA di CRUD Paket + kolom tabel
+- Diisi konten dummy lengkap: settings, 5 pendaftaran baru, harga per jenjang untuk semua paket
+- Diverifikasi: curl backend + screenshot UI (tab SD/SMP/SMA, admin edit form)
 
 ## Backlog
 - P1: Notifikasi WhatsApp OTOMATIS saat pendaftaran baru — MENUNGGU pilihan provider user (Twilio/Meta Cloud API + kredensial). Nomor tujuan sudah bisa dikonfigurasi via /admin/whatsapp.
