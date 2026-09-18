@@ -16,10 +16,7 @@ export const About = ({ settings }) => {
           <div className="relative overflow-hidden rounded-[2rem] rounded-tr-[6rem] border-8 border-[#F3F7FC] shadow-2xl">
             <motion.img style={{ y, scale: 1.15 }} src={settings.about_image} alt="Tutor mengajar siswa" className="aspect-[4/5] w-full object-cover" data-testid="about-image" />
           </div>
-          <div className="absolute -bottom-6 -right-4 rounded-2xl bg-navy px-6 py-5 text-white shadow-2xl md:right-8">
-            <p className="font-serif text-3xl">{settings.stats?.[3]?.value || "14"}<span className="text-brand-orange">+</span></p>
-            <p className="text-xs text-slate-300">{settings.stats?.[3]?.label || "Tahun Pengalaman"}</p>
-          </div>
+
         </Reveal>
 
         <div>
