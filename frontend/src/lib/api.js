@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+export const API = `${BACKEND_URL.replace(/\/$/, "")}/api`;
 const TOKEN_KEY = "sc_admin_token";
 
 export const api = axios.create({ baseURL: API, withCredentials: true });

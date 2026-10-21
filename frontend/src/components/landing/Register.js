@@ -21,7 +21,11 @@ export const Register = ({ settings, programs = [], packages = [] }) => {
       setDone(true);
       toast.success("Pendaftaran terkirim! Tim kami akan menghubungi Anda.");
     } catch (err) {
-      toast.error(formatApiError(err));
+      console.warn("Backend registration unavailable, redirecting to WhatsApp:", err);
+      setDone(true);
+      toast.info("Menghubungkan ke WhatsApp untuk konfirmasi pendaftaran...");
+      const link = waLink(settings.whatsapp, waMsg);
+      window.open(link, "_blank");
     } finally {
       setLoading(false);
     }

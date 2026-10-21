@@ -11,22 +11,26 @@ import { FAQ } from "@/components/landing/FAQ";
 import { Register } from "@/components/landing/Register";
 import { Footer } from "@/components/landing/Footer";
 
+import { defaultData } from "@/lib/defaultData";
+
 export default function Home() {
   const { data, loading, error } = useSiteContent();
   useLenis();
 
-  if (loading) {
+  if (loading && !data) {
     return (
       <div className="grid min-h-screen place-items-center bg-navy-deep" data-testid="home-loading">
         <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand-orange border-t-transparent" />
       </div>
     );
   }
-  if (error) {
+
+  if (error && !data) {
     return <div className="grid min-h-screen place-items-center bg-navy-deep text-white" data-testid="home-error">Gagal memuat konten. Coba muat ulang halaman.</div>;
   }
 
-  const { settings, programs, tutors, packages, faqs } = data;
+  const content = data || defaultData;
+  const { settings, programs, tutors, packages, faqs } = content;
   return (
     <div className="bg-navy-deep font-sans" data-testid="home-page">
       <Navbar settings={settings} />

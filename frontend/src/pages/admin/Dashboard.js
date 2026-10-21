@@ -14,7 +14,11 @@ const CARDS = [
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
-  useEffect(() => { api.get("/admin/summary").then((r) => setData(r.data)); }, []);
+  useEffect(() => {
+    api.get("/admin/summary")
+      .then((r) => setData(r.data))
+      .catch((err) => console.error("Failed to load admin summary:", err));
+  }, []);
 
   return (
     <div data-testid="admin-dashboard">
@@ -29,7 +33,7 @@ export default function Dashboard() {
               <span className={`grid h-11 w-11 place-items-center rounded-xl ${accent ? "bg-white/20" : "bg-sky/15 text-navy"}`}><Icon size={20} /></span>
               <span className={`text-xs font-semibold ${accent ? "text-white/80" : "text-slate-400"}`}>Kelola →</span>
             </div>
-            <p className={`mt-5 font-serif text-4xl ${accent ? "text-white" : "text-navy"}`}>{data ? data.counts[key] : "–"}</p>
+            <p className={`mt-5 font-serif text-4xl ${accent ? "text-white" : "text-navy"}`}>{data?.counts?.[key] ?? "–"}</p>
             <p className={`mt-1 text-sm ${accent ? "text-white/90" : "text-slate-500"}`}>{label}</p>
           </Link>
         ))}

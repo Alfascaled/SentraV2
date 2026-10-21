@@ -12,9 +12,9 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
-    setToken(data.access_token);
-    setUser(data.user);
-    return data.user;
+    setToken(data.token);
+    setUser(data.admin);
+    return data.admin;
   };
 
   const logout = async () => {
