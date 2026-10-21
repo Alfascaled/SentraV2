@@ -10,16 +10,19 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContentController;
 
 // ── Public routes ───────────────────────────────────────────
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 // Public read-only
+Route::get('/content',   [ContentController::class, 'show']);
 Route::get('/settings',  [SettingController::class, 'show']);
 Route::get('/programs',  [ProgramController::class, 'index']);
 Route::get('/tutors',    [TutorController::class,   'index']);
 Route::get('/packages',  [PackageController::class, 'index']);
 Route::get('/faq',       [FaqController::class,     'index']);
+Route::get('/faqs',      [FaqController::class,     'index']);
 
 // Public registration (pendaftaran siswa dari landing page)
 Route::post('/registrations', [RegistrationController::class, 'store']);
@@ -64,6 +67,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/faq',             [FaqController::class, 'store']);
     Route::put('/faq/{id}',         [FaqController::class, 'update']);
     Route::delete('/faq/{id}',      [FaqController::class, 'destroy']);
+    Route::post('/faqs',            [FaqController::class, 'store']);
+    Route::put('/faqs/{id}',        [FaqController::class, 'update']);
+    Route::delete('/faqs/{id}',     [FaqController::class, 'destroy']);
 
     // Upload
     Route::post('/upload', [UploadController::class, 'store']);

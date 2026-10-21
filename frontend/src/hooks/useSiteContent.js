@@ -13,12 +13,22 @@ export function useSiteContent() {
       .get("/content")
       .then((r) => {
         if (isMounted && r.data) {
-          setData(r.data);
+          setData({
+            ...defaultData,
+            ...r.data,
+            settings: {
+              ...defaultData.settings,
+              ...(r.data.settings || {}),
+            },
+            programs: r.data.programs ?? defaultData.programs,
+            tutors: r.data.tutors ?? defaultData.tutors,
+            packages: r.data.packages ?? defaultData.packages,
+            faqs: r.data.faqs ?? defaultData.faqs,
+          });
         }
       })
       .catch((e) => {
         console.warn("Backend not available, using default content:", e);
-        // We keep defaultData so the landing page renders smoothly
       });
 
     return () => {

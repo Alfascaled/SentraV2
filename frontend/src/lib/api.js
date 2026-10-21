@@ -27,3 +27,17 @@ export const formatRupiah = (n) => `Rp ${Number(n || 0).toLocaleString("id-ID")}
 
 export const waLink = (number, message = "") =>
   `https://wa.me/${String(number || "").replace(/\D/g, "")}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
+
+export function resolveImageUrl(url) {
+  if (!url) return "";
+  let clean = String(url).trim();
+  const duplicateMatch = clean.match(/^(?:https?:\/\/[^\/]+)+(https?:\/\/.+)$/i);
+  if (duplicateMatch) {
+    clean = duplicateMatch[1];
+  }
+  if (clean.startsWith("http://") || clean.startsWith("https://") || clean.startsWith("data:")) {
+    return clean;
+  }
+  const base = BACKEND_URL.replace(/\/$/, "");
+  return `${base}${clean.startsWith("/") ? "" : "/"}${clean}`;
+}

@@ -1,5 +1,6 @@
 import { GraduationCap, BookOpen } from "lucide-react";
 import { Reveal, SectionHead } from "./Reveal";
+import { resolveImageUrl } from "@/lib/api";
 
 export const Tutors = ({ tutors = [] }) => (
   <section id="pengajar" className="noise bg-navy py-28 md:py-36" data-testid="tutors-section">
@@ -10,7 +11,7 @@ export const Tutors = ({ tutors = [] }) => (
           <Reveal key={t.id} delay={i * 0.12}>
             <article className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-navy-deep/60" data-testid={`tutor-card-${i}`}>
               <div className="relative aspect-[4/5] overflow-hidden">
-                <img src={t.photo} alt={t.name} className="h-full w-full object-cover grayscale transition-[transform,filter] duration-700 group-hover:scale-105 group-hover:grayscale-0" />
+                <img src={resolveImageUrl(t.photo)} alt={t.name} className="h-full w-full object-cover grayscale transition-[transform,filter] duration-700 group-hover:scale-105 group-hover:grayscale-0" />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/20 to-transparent" />
                 <span className="absolute left-5 top-5 rounded-full bg-brand-orange px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white">{t.subject}</span>
               </div>

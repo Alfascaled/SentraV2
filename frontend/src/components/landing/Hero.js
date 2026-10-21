@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring } from "fram
 import { ArrowRight, Play, Star } from "lucide-react";
 import { MaskedLines } from "./Reveal";
 import { scrollToId } from "@/hooks/useLenis";
+import { resolveImageUrl } from "@/lib/api";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -91,7 +92,7 @@ export const Hero = ({ settings }) => {
           <motion.div style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }} className="relative">
             <div className="absolute -inset-3 rounded-[2.5rem] bg-gradient-to-br from-brand-orange/60 via-transparent to-sky/50 blur-2xl" />
             <div className="relative overflow-hidden rounded-[2.2rem] border border-navy/10 shadow-[0_40px_80px_-30px_rgba(23,43,77,0.5)]">
-              <img src={settings.hero_image} alt="Siswa belajar bersama tutor" className="aspect-[4/5] w-full object-cover" data-testid="hero-image" />
+              <img src={resolveImageUrl(settings.hero_image)} alt="Siswa belajar bersama tutor" className="aspect-[4/5] w-full object-cover" data-testid="hero-image" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent to-transparent" />
               <div className="absolute inset-x-6 bottom-6 flex items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-5 py-4 backdrop-blur-xl">
                 <div>

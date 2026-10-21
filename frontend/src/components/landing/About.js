@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Reveal, SectionHead } from "./Reveal";
+import { resolveImageUrl } from "@/lib/api";
 
 export const About = ({ settings }) => {
   const ref = useRef(null);
@@ -14,7 +15,7 @@ export const About = ({ settings }) => {
         <Reveal className="relative">
           <div className="absolute -left-6 -top-6 h-40 w-40 rounded-full bg-brand-yellow/60 blur-2xl" />
           <div className="relative overflow-hidden rounded-[2rem] rounded-tr-[6rem] border-8 border-[#F3F7FC] shadow-2xl">
-            <motion.img style={{ y, scale: 1.15 }} src={settings.about_image} alt="Tutor mengajar siswa" className="aspect-[4/5] w-full object-cover" data-testid="about-image" />
+            <motion.img style={{ y, scale: 1.15 }} src={resolveImageUrl(settings.about_image)} alt="Tutor mengajar siswa" className="aspect-[4/5] w-full object-cover" data-testid="about-image" />
           </div>
 
         </Reveal>

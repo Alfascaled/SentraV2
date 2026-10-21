@@ -5,13 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { api, API, formatApiError } from "@/lib/api";
+import { api, formatApiError, resolveImageUrl } from "@/lib/api";
 
 const ImageField = ({ value, onChange, testId, id }) => {
   const inputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
-  const base = API.replace(/\/api$/, "");
-  const preview = value ? (value.startsWith("/api/") ? `${base}${value}` : value) : "";
+  const preview = resolveImageUrl(value);
 
   const handleFile = async (e) => {
     const file = e.target.files?.[0];
@@ -21,7 +20,7 @@ const ImageField = ({ value, onChange, testId, id }) => {
       const form = new FormData();
       form.append("file", file);
       const { data } = await api.post("/upload", form, { headers: { "Content-Type": "multipart/form-data" } });
-      onChange(`${base}${data.url}`);
+      onChange(resolveImageUrl(data.url));
       toast.success("Gambar berhasil diunggah");
     } catch (err) {
       toast.error(formatApiError(err));

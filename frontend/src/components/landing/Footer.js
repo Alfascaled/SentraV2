@@ -1,12 +1,12 @@
 import { Instagram, Mail, MapPin, MessageCircle } from "lucide-react";
 import { scrollToId } from "@/hooks/useLenis";
-import { waLink } from "@/lib/api";
+import { waLink, resolveImageUrl } from "@/lib/api";
 
 export const Footer = ({ settings }) => (
   <footer className="border-t border-white/10 bg-navy-deep text-slate-300" data-testid="footer">
     <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-12 md:px-8">
       <div className="md:col-span-5">
-        <img src={settings.logo_url} alt={settings.brand_name} className="-my-6 -ml-4 h-32 w-auto" />
+        <img src={resolveImageUrl(settings.logo_url)} alt={settings.brand_name} className="-my-6 -ml-4 h-32 w-auto" />
         <p className="mt-5 max-w-sm text-sm leading-relaxed">{settings.footer_text}</p>
         <p className="mt-4 font-serif italic text-brand-yellow">“{settings.tagline}”</p>
       </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { scrollToId } from "@/hooks/useLenis";
-import { waLink } from "@/lib/api";
+import { waLink, resolveImageUrl } from "@/lib/api";
 
 const LINKS = [
   { id: "home", label: "Home" },
@@ -37,7 +37,7 @@ export const Navbar = ({ settings }) => {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-8">
         <button onClick={() => go("home")} className="flex items-center gap-3" data-testid="nav-logo">
-          <img src={settings.logo_url} alt={settings.brand_name} className="-my-8 h-28 w-auto object-contain" />
+          <img src={resolveImageUrl(settings.logo_url)} alt={settings.brand_name} className="-my-8 h-28 w-auto object-contain" />
         </button>
 
         <nav className="hidden items-center gap-1 lg:flex" data-testid="nav-links">
